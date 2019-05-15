@@ -1,2 +1,2 @@
 # Othello
-practice algorithm which i learned in the AI class
+人工知能の練習
