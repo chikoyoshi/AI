@@ -56,7 +56,7 @@ int getTerminalValue();             //ゲーム終了局面の評価値を返す
 int getEvaluationValue();           //評価関数の計算
 void makeMove(Move, int);           //実際に手を進める
 void unmakeMove(int);               //手を戻す
-int search(int);                    //探索して最も評価の高い手を選ぶ
+int search(int,int,int);            //探索して最も評価の高い手を選ぶ(Min-Max -> alpha-beta)
 void comPlayer();                   //COMの手を生成する関数
 Move manPlayer();                   //人間の入力を管理する関数
 Move randplayer();                  //ランダムに手を返す

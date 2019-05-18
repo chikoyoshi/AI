@@ -1,16 +1,15 @@
 /*******************************************************************
 
-	ã‚ªã‚»ãƒ­ ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã€€ã€€ã€€ã€€ 
-	
-	(é«˜å°‚ã®ã¨ãã®ã‚„ã¤)
+	ƒIƒZƒ ƒvƒƒOƒ‰ƒ€@@@@ 
 
 *******************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>//memcpy
+#include <time.h>
 #include "Othello.h"
 
-const char* piece[3] = { "  ", " â—", " â—‹" }; 
+const char* piece[3] = { "  ", " ›", " œ" }; 
 const char* abc[8] = { "a","b","c","d","e","f","g","h"};
 int ply;
 int turn;
@@ -20,24 +19,23 @@ Move nextmove;
 
 int evalboard[BOARDSIZE] =
 {
-	0,   0,   0,   0,  0,  0,  0,   0,     0,   0,
-	0,  45, -11,   4, -1, -1,  4, -11,    45,   0,
-	0, -11, -16,  -1, -3, -3,  2, -16,   -11,   0,
-	0,   4,  -1,   2, -1, -1,  2,  -1,     4,   0,
-	0,  -1,  -3,  -1,  0,  0, -1,  -3,    -1,   0,
-	0,  -1,  -3,  -1,  0,  0, -1,  -3,    -1,   0,
-	0,   4,  -1,   2, -1, -1,  2,  -1,     4,   0,
-	0, -11, -16,  -1, -3, -3, -1, -16,   -11,   0,
-	0,  45, -11,   4, -1, -1,  4, -11,    45,   0,
-	0,   0,   0,   0,  0,  0,  0,  0,      0,   0
-
+   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+   0,  99, -20,  -5, -10, -10,  -5, -20,  99,   0,
+   0, -20, -25,  -5,  -3,  -3,  -5, -25, -20,   0,
+   0,  -5,  -5,  -1,  -1,  -1,  -1,  -5,  -5,   0,
+   0, -10,  -3,  -1,  -1,  -1,  -1,  -3, -10,   0,
+   0, -10,  -3,  -1,  -1,  -1,  -1,  -3, -10,   0,
+   0,  -5,  -5,  -1,  -1,  -1,  -1,  -5,  -5,   0,
+   0, -20, -25,  -6,  -3,  -3,  -5, -25, -20,   0,
+   0,  99, -20,  -5, -10, -10,  -5, -20,  99,   0,
+   0,   0,   0,   0,   0,   0,   0,   0,   0,   0
 };
-///////////////////////////AIç”¨ã«è¿½åŠ ã€€ã“ã“ã¾ã§
+///////////////////////////AI—p‚É’Ç‰Á@‚±‚±‚Ü‚Å
 
-//2æ¬¡å…ƒã®åº§æ¨™ã‚’ä¸€æ¬¡å…ƒã«å¤‰æ›
+//2ŸŒ³‚ÌÀ•W‚ğˆêŸŒ³‚É•ÏŠ·
 int getposition( int x, int y ){ return y * ASIDE + x; };
-//ä¸€ç•ªå¤§äº‹ãªå¤‰æ•°ã€ã“ã“ã§ã¯ä¸€æ¬¡å…ƒã§è¡¨ç¾
-unsigned char board[BOARDSIZE] = //intã§ã‚‚è‰¯ã„ãŒã€ãƒ‡ãƒ¼ã‚¿æ ¼ç´ã®ã“ã¨ã‚’è€ƒãˆã¦charã«ã—ã¦ã„ã‚‹
+//ˆê”Ô‘å–‚È•Ï”A‚±‚±‚Å‚ÍˆêŸŒ³‚Å•\Œ»
+unsigned char board[BOARDSIZE] = //int‚Å‚à—Ç‚¢‚ªAƒf[ƒ^Ši”[‚Ì‚±‚Æ‚ğl‚¦‚Ächar‚É‚µ‚Ä‚¢‚é
 {
 	N, N, N, N, N, N, N, N, N, N, 
 	N, 0, 0, 0, 0, 0, 0, 0, 0, N,
@@ -50,7 +48,7 @@ unsigned char board[BOARDSIZE] = //intã§ã‚‚è‰¯ã„ãŒã€ãƒ‡ãƒ¼ã‚¿æ ¼ç´ã®ã“ã¨
 	N, 0, 0, 0, 0, 0, 0, 0, 0, N,
 	N, N, N, N, N, N, N, N, N, N 
 };
-// è¡¨ç¤ºé–¢æ•° display function
+// •\¦ŠÖ” display function
 void output()
 {
 	int x,y;
@@ -59,7 +57,7 @@ void output()
 	{
 		printf( "%d |", y );
 		for ( x = 1; x <= SIDE; x++ )
-			printf( "%s|", piece[board[getposition(x,y)]] );//ã¡ã‚‡ã£ã¨ç°¡æ½”ã«æ›¸ããŸã‚ã®ãƒ’ãƒ³ãƒˆ
+			printf( "%s|", piece[board[getposition(x,y)]] );//‚¿‚å‚Á‚ÆŠÈŒ‰‚É‘‚­‚½‚ß‚Ìƒqƒ“ƒg
 		printf( "\n" );
 	}
 }
@@ -68,15 +66,15 @@ int isLegalMove(Move pos)
 {
 	int dirx, diry, dir;
 	int pos1;
-	// è‡ªåˆ†ã®è‰²ã€ç›¸æ‰‹ã®è‰²ã¯ä½•ã‹å¤‰æ•°ã«å…¥ã‚Œã¦ãŠã
+	// ©•ª‚ÌFA‘Šè‚ÌF‚Í‰½‚©•Ï”‚É“ü‚ê‚Ä‚¨‚­
 	int color = TURNCOLOR( turn );
 	int opponentcolor = TURNCOLOR(OPPONENT(turn));
 
-	if ( board[pos] != 0 )//ç©ºããƒã‚¹ã§ãªã„ã‹
+	if ( board[pos] != 0 )//‹ó‚«ƒ}ƒX‚Å‚È‚¢‚©
 		return FALSE;
 	
-	// posã®å‘¨ã‚Š8æ–¹å‘ã‚’èª¿ã¹ç›¸æ‰‹çŸ³ãŒå–ã‚Œã‚‹ã‹èª¿ã¹ã‚‹
-	// 8æ–¹å‘ãƒ«ãƒ¼ãƒ—ã®æ›¸ãæ–¹1
+	// pos‚Ìü‚è8•ûŒü‚ğ’²‚×‘ŠèÎ‚ªæ‚ê‚é‚©’²‚×‚é
+	// 8•ûŒüƒ‹[ƒv‚Ì‘‚«•û1
 	for ( dirx = -1; dirx <= 1; dirx++ )
 	{
 		for ( diry = -ASIDE; diry <= ASIDE; diry += ASIDE )
@@ -84,20 +82,20 @@ int isLegalMove(Move pos)
 			dir = dirx + diry;
 			if ( dir == 0 )
 				continue;
-			pos1 = pos + dir;//posã®éš£ã®ãƒã‚¹
-			//ä»¥ä¸‹ã¯ board[pos1] ã®ä¸­èº«ã‚’ãƒã‚§ãƒƒã‚¯ã—ãªãŒã‚‰ã€
-			//pos1ã‚’ +=dirã—ã¦ã„ã
-			//ã ã‚ãªã‚‰ continue
-			if ( board[pos1] != opponentcolor)//ç›¸æ‰‹ã®çŸ³ãŒã‚ã‚‹ã‹
+			pos1 = pos + dir;//pos‚Ì—×‚Ìƒ}ƒX
+			//ˆÈ‰º‚Í board[pos1] ‚Ì’†g‚ğƒ`ƒFƒbƒN‚µ‚È‚ª‚çA
+			//pos1‚ğ +=dir‚µ‚Ä‚¢‚­
+			//‚¾‚ß‚È‚ç continue
+			if ( board[pos1] != opponentcolor)//‘Šè‚ÌÎ‚ª‚ ‚é‚©
 				continue;
-			do // ç›¸æ‰‹ã®çŸ³ãŒã‚ã‚‹é–“ã¯æ¬¡ã‚’èª¿ã¹ã‚‹
+			do // ‘Šè‚ÌÎ‚ª‚ ‚éŠÔ‚ÍŸ‚ğ’²‚×‚é
 			{
 				pos1 += dir;
 			}while ( board[pos1] == opponentcolor );
-			// ã²ã£ãã‚Šè¿”ã™ãŸã‚ã«ã¯æœ€å¾Œã«è‡ªåˆ†ã®çŸ³ãŒãªã„ã¨ã„ã‘ãªã„
+			// ‚Ğ‚Á‚­‚è•Ô‚·‚½‚ß‚É‚ÍÅŒã‚É©•ª‚ÌÎ‚ª‚È‚¢‚Æ‚¢‚¯‚È‚¢
 			if ( board[pos1] != color )
 				continue;
-			//æœ€å¾Œã¾ã§æ¥ãŸã‚‰æˆåŠŸ
+			//ÅŒã‚Ü‚Å—ˆ‚½‚ç¬Œ÷
 			return TRUE;
 		}
 	}
@@ -106,13 +104,13 @@ int isLegalMove(Move pos)
 
 int generateMoves( Move moves[] )	
 {
-	int num = 0;//ç”Ÿæˆã™ã‚‹åˆæ³•æ‰‹ã®æ•°
+	int num = 0;//¶¬‚·‚é‡–@è‚Ì”
 	int pos;
-	// å·¦ä¸Šã‹ã‚‰é †ã«çŸ³ã‚’ç½®ãã€åˆæ³•æ‰‹ã‹èª¿ã¹ã‚‹
+	// ¶ã‚©‚ç‡‚ÉÎ‚ğ’u‚«A‡–@è‚©’²‚×‚é
 	for ( pos = 11; pos <= 88; pos++ )
 	{
 		if (isLegalMove(pos))
-			moves[num++] = pos;//numç•ªç›®ã®é…åˆ—ã«
+			moves[num++] = pos;//num”Ô–Ú‚Ì”z—ñ‚É
 	}
 	return num;
 }
@@ -138,7 +136,7 @@ int isTerminalNode( int isPass )
 
 int getTerminalValue()
 {
-	//çŸ³æ•°ã®å·®ã‚’è¨ˆç®—ã€€è‡ªåˆ†ã®çŸ³ãƒ¼ç›¸æ‰‹ã®çŸ³
+	//Î”‚Ì·‚ğŒvZ@©•ª‚ÌÎ[‘Šè‚ÌÎ
 	int diff = stonenum[turn] - stonenum[OPPONENT(turn)];
 
 	if (diff > 0){
@@ -155,15 +153,15 @@ int getEvaluationValue()
 {
 	int pos, value, c;
 	Move moves[MOVENUM];
-	// åˆæ³•æ‰‹æ•°ã®å·®ã‚’è©•ä¾¡é–¢æ•°ã¨ã™ã‚‹(è‡ªç”±åº¦)
-	value = generateMoves(moves);//è‡ªåˆ†ã®åˆæ³•æ‰‹æ•°ã‚’è¶³ã™
+	// ‡–@è”‚Ì·‚ğ•]‰¿ŠÖ”‚Æ‚·‚é(©—R“x)
+	value = generateMoves(moves);//©•ª‚Ì‡–@è”‚ğ‘«‚·
 	turn = OPPONENT(turn);
-	//ç›¸æ‰‹ã®åˆæ³•æ‰‹æ•°ã‚’å¼•ã
+	//‘Šè‚Ì‡–@è”‚ğˆø‚­
 	value -= generateMoves(moves);
-	//æ‰‹ç•ªã‚’æˆ»ã™
+	//è”Ô‚ğ–ß‚·
 	turn = OPPONENT(turn);
 
-	value *= 30;//è‡ªç”±åº¦ï¼‘ã‚’30ç‚¹ã¨ã—ã¦ãŠãï¼ˆé©å½“ï¼‰
+	value *= 30;//©—R“x‚P‚ğ30“_‚Æ‚µ‚Ä‚¨‚­i“K“–j
 	for ( pos = 11; pos <= 88; pos++ )
 	{
 		c = board[pos];
@@ -187,7 +185,7 @@ void makeMove( Move pos, int depth )
 	memcpy( history[depth].board, board, sizeof( board ));
 	memcpy( history[depth].stonenum, stonenum, sizeof( stonenum ));
 	
-	if ( pos == PASSMOVE )//ãƒ‘ã‚¹æ‰‹ã®å ´åˆ
+	if ( pos == PASSMOVE )//ƒpƒXè‚Ìê‡
 	{
 		turn = OPPONENT(turn);
 		return;
@@ -201,23 +199,23 @@ void makeMove( Move pos, int depth )
 			dir = dirx + diry;
 			if ( dir == 0 )
 				continue;
-			pos1 = pos + dir;//posã®éš£ã®ãƒã‚¹
-			//ä»¥ä¸‹ã¯ board[pos1] ã®ä¸­èº«ã‚’ãƒã‚§ãƒƒã‚¯ã—ãªãŒã‚‰ã€
-			//pos1ã‚’ +=dirã—ã¦ã„ã
-			//ã ã‚ãªã‚‰ continue
-			if ( board[pos1] != opponentcolor)//ç›¸æ‰‹ã®çŸ³ãŒã‚ã‚‹ã‹
+			pos1 = pos + dir;//pos‚Ì—×‚Ìƒ}ƒX
+			//ˆÈ‰º‚Í board[pos1] ‚Ì’†g‚ğƒ`ƒFƒbƒN‚µ‚È‚ª‚çA
+			//pos1‚ğ +=dir‚µ‚Ä‚¢‚­
+			//‚¾‚ß‚È‚ç continue
+			if ( board[pos1] != opponentcolor)//‘Šè‚ÌÎ‚ª‚ ‚é‚©
 				continue;
-			do // ç›¸æ‰‹ã®çŸ³ãŒã‚ã‚‹é–“ã¯æ¬¡ã‚’èª¿ã¹ã‚‹
+			do // ‘Šè‚ÌÎ‚ª‚ ‚éŠÔ‚ÍŸ‚ğ’²‚×‚é
 			{
 				pos1 += dir;
 			}while ( board[pos1] == opponentcolor );
-			// ã²ã£ãã‚Šè¿”ã™ãŸã‚ã«ã¯æœ€å¾Œã«è‡ªåˆ†ã®çŸ³ãŒãªã„ã¨ã„ã‘ãªã„
+			// ‚Ğ‚Á‚­‚è•Ô‚·‚½‚ß‚É‚ÍÅŒã‚É©•ª‚ÌÎ‚ª‚È‚¢‚Æ‚¢‚¯‚È‚¢
 			if ( board[pos1] != color )
 				continue;
 
-			//æœ€å¾Œã¾ã§æ¥ãŸã‚‰æˆåŠŸ!å®Ÿéš›ã«ã²ã£ãã‚Šè¿”ã™
+			//ÅŒã‚Ü‚Å—ˆ‚½‚ç¬Œ÷!ÀÛ‚É‚Ğ‚Á‚­‚è•Ô‚·
 			pos1 = pos + dir;
-			do // ç›¸æ‰‹ã®çŸ³ãŒã‚ã‚‹é–“ã²ã£ãã‚Šè¿”ã™ã€€
+			do // ‘Šè‚ÌÎ‚ª‚ ‚éŠÔ‚Ğ‚Á‚­‚è•Ô‚·@
 			{
 				board[pos1] = color;
 				pos1 += dir;
@@ -230,44 +228,110 @@ void makeMove( Move pos, int depth )
 	turn = OPPONENT(turn);
 }
 
-// æ‰‹ã‚’æˆ»ã™
+// è‚ğ–ß‚·
 void unmakeMove(int depth)
 {
-	// é…åˆ—ã®ä¸­èº«ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹ã®ã¯memcpy()ã‚’ä½¿ã†ã¨ç°¡å˜
-	// é€†ã®äº‹ã‚’makeMove()ã§ã—ãªã„ã¨ã„ã‘ãªã„
-	// å±€é¢ã‚’é…åˆ—historyã‹ã‚‰å¾©å…ƒ
+	// ”z—ñ‚Ì’†g‚ğƒRƒs[‚·‚é‚Ì‚Ímemcpy()‚ğg‚¤‚ÆŠÈ’P
+	// ‹t‚Ì–‚ğmakeMove()‚Å‚µ‚È‚¢‚Æ‚¢‚¯‚È‚¢
+	// ‹Ç–Ê‚ğ”z—ñhistory‚©‚ç•œŒ³
 	memcpy( board, history[depth].board, sizeof( board ));
 	memcpy( stonenum, history[depth].stonenum, sizeof( stonenum ));
 	turn = OPPONENT(turn);
 }
 
-// æ¢ç´¢ã—ã¦æœ€ã‚‚è©•ä¾¡ã®é«˜ã„æ‰‹ã‚’é¸ã¶
-int search(int depth)
+/*
+// ’Tõ‚µ‚ÄÅ‚à•]‰¿‚Ì‚‚¢è‚ğ‘I‚Ô(alpha-beta)(ave : 0.537sec)
+int search(int depth,int alpha,int beta)
 {
 	int i;
-	int movenum;//æ‰‹ã®æ•°
-	Move moves[MOVENUM];//æ‰‹ã‚’å…¥ã‚Œã‚‹é…åˆ— an array of moves
+	int temp;
+	int movenum;//è‚Ì”
+	Move moves[MOVENUM];//è‚ğ“ü‚ê‚é”z—ñ an array of moves
 	int value;
-	int bestvalue = -INFINITY -1;//ã¾ãšæœ€å°å€¤ã‚’å…¥ã‚Œã‚‹
+	int bestvalue = -INFINITY -1;//‚Ü‚¸Å¬’l‚ğ“ü‚ê‚é
 	if (depth >= MAXDEPTH)
 		return getEvaluationValue();
-
-	//æ‰‹ã‚’ç”Ÿæˆ
+	//è‚ğ¶¬
 	movenum = generateMoves( moves );
 	if ( movenum == 0 )
 	{
 		if ( isTerminalNode(TRUE) )// Game Over
 			return getTerminalValue();
-		else // ãƒ‘ã‚¹
+		else // ƒpƒX
 			moves[movenum++] = PASSMOVE;
 	}
 	for ( i = 0; i < movenum; i++ )
 	{
-		makeMove( moves[i], depth );//ä¸€æ‰‹é€²ã‚
-		value = -search(depth + 1);
-		output();//for Debug
-		printf("i = %d, value = %d, move = %d\n", i, value, moves[i]);//for Debug
-		unmakeMove( depth );//ä¸€æ‰‹æˆ»ã‚‹
+		makeMove( moves[i], depth );//ˆêèi‚ß
+		if ((depth % 2) == 0){
+			temp = -search(depth + 1,alpha,beta);						
+			unmakeMove(depth);
+			if (alpha < temp){
+				alpha = temp;
+			}
+			if (alpha >= beta) {
+				//printf("depth=%d,alpha=%d,beta=%d\n",depth,alpha,beta);
+				//printf("beta cut\n");
+				return beta;
+			}
+			if (i == (movenum - 1)) {
+				if (depth == 0){
+					nextmove = moves[i];
+				}
+				return alpha;
+			}
+		}
+		else{
+			temp = -search(depth + 1,alpha,beta);		
+			unmakeMove(depth);
+			if (beta > temp){
+				beta = temp;
+			}
+			if (beta <= alpha) {
+				//printf("depth=%d,alpha=%d,beta=%d\n",depth,alpha,beta);
+				//printf("alpha cut\n");
+				return alpha;
+			}
+			if (i == (movenum - 1)) {
+//				unmakeMove(depth);
+				if (depth == 0){
+					nextmove = moves[i];
+				}
+				return beta;
+			}
+		}
+	}
+	//return bestvalue;
+}
+*/
+
+// ’Tõ‚µ‚ÄÅ‚à•]‰¿‚Ì‚‚¢è‚ğ‘I‚Ô(MIN-MAX) (ave : 10.792)
+int search(int depth,int k,int l)//(alpha-beta ‚É‘µ‚¦‚é‚½‚ß‚É•Ï”’Ç‰Á)
+{
+	int i;
+	int movenum;//è‚Ì”
+	Move moves[MOVENUM];//è‚ğ“ü‚ê‚é”z—ñ an array of moves
+	int value;
+	int bestvalue = -INFINITY -1;//‚Ü‚¸Å¬’l‚ğ“ü‚ê‚é
+	if (depth >= MAXDEPTH)
+		return getEvaluationValue();
+
+	//è‚ğ¶¬
+	movenum = generateMoves( moves );
+	if ( movenum == 0 )
+	{
+		if ( isTerminalNode(TRUE) )// Game Over
+			return getTerminalValue();
+		else // ƒpƒX
+			moves[movenum++] = PASSMOVE;
+	}
+	for ( i = 0; i < movenum; i++ )
+	{
+		makeMove( moves[i], depth );//ˆêèi‚ß
+		value = -search(depth + 1,0,0);
+		//output();//for Debug
+		//printf("i = %d, value = %d, move = %d\n", i, value, moves[i]);//for Debug
+		unmakeMove( depth );//ˆêè–ß‚é
 
 		if (value > bestvalue){
 			bestvalue = value;
@@ -279,28 +343,29 @@ int search(int depth)
 	return bestvalue;
 }
 
-//COMã®æ‰‹ã‚’ç”Ÿæˆã™ã‚‹é–¢æ•°
+
+//COM‚Ìè‚ğ¶¬‚·‚éŠÖ”
 void comPlayer()
 {
 	int value;
 	printf( "Com Thinking...\n");
-	value = search(0);
+	value = search(0,-2147483647,2147483647);
 	printf( "value = %d\n", value );
 	if ( value == INFINITY )
 		printf( "Computer Finds Win!!\n" );
 }
 
-///////////////////////////AIç”¨ã«è¿½åŠ ã€€ã“ã“ã¾ã§
+///////////////////////////AI—p‚É’Ç‰Á@‚±‚±‚Ü‚Å
 
-//äººé–“ã®å…¥åŠ›ã‚’ç®¡ç†ã™ã‚‹é–¢æ•°
+//lŠÔ‚Ì“ü—Í‚ğŠÇ—‚·‚éŠÖ”
 Move manPlayer()
 {
-	//å…¥åŠ›ã‚’ã•ã›ã€åˆæ³•æ‰‹ã‹ãƒã‚§ãƒƒã‚¯
+	//“ü—Í‚ğ‚³‚¹A‡–@è‚©ƒ`ƒFƒbƒN
 	char line[256];
 	int x, y, num, move ;
 	Move moves[MOVENUM];
 	num = generateMoves( moves );
-	// åˆæ³•æ‰‹ãŒç„¡ã„å ´åˆ
+	// ‡–@è‚ª–³‚¢ê‡
 	if(num == 0)
 	{
 		printf("PASS!\n");
@@ -337,8 +402,8 @@ Move manPlayer()
 
 
 
-// ãƒ©ãƒ³ãƒ€ãƒ ã«æ‰‹ã‚’è¿”ã™ãƒ—ãƒ¬ã‚¤ãƒ¤
-//ãƒ©ãƒ³ãƒ€ãƒ ã«æ‰‹ã‚’è¿”ã™
+// ƒ‰ƒ“ƒ_ƒ€‚Éè‚ğ•Ô‚·ƒvƒŒƒCƒ„
+//ƒ‰ƒ“ƒ_ƒ€‚Éè‚ğ•Ô‚·
 Move randplayer()
 {
 	int num;
@@ -350,7 +415,7 @@ Move randplayer()
 	return moves[rand() % num];
 }
 
-//ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ãªã©ã‚’åˆæœŸåŒ–
+//ƒOƒ[ƒoƒ‹•Ï”‚È‚Ç‚ğ‰Šú‰»
 void init()
 {
 	turn = BLACK_TURN;
@@ -358,31 +423,38 @@ void init()
 	stonenum[BLACK_TURN] = 2;
 	stonenum[WHITE_TURN] = 2;
 }
-/*
+
 int main()
 {
-	//ã¾ãšã¯å¤‰æ•°å®£è¨€ã€åˆæœŸåŒ–ãªã©
+	//‚Ü‚¸‚Í•Ï”éŒ¾A‰Šú‰»‚È‚Ç
 	int result;
 	char line[256];
 	int manturn = BLACK_TURN;
+	clock_t start,end;
 	init();
-	output();//å±€é¢ã®è¡¨ç¤º
-	while(1)//ä¸€å›ã®å¯¾å±€ãŒçµ‚ã‚ã‚‹ã¾ã§ãƒ«ãƒ¼ãƒ—
+	output();//‹Ç–Ê‚Ì•\¦
+	printf("Press Enter Key\n");
+	fgetchar();
+	srand(time(NULL));
+	start = clock();
+	while(1)//ˆê‰ñ‚Ì‘Î‹Ç‚ªI‚í‚é‚Ü‚Åƒ‹[ƒv
 	{
-		if ( isTerminalNode(FALSE))//çµ‚å±€ã‹ãƒã‚§ãƒƒã‚¯
+		if ( isTerminalNode(FALSE))//I‹Ç‚©ƒ`ƒFƒbƒN
 		{
-			//çŸ³ã®æ•°ã§å‹ã¡è² ã‘åˆ¤å®šã—è¡¨ç¤º
-			result = stonenum[BLACK_TURN] - stonenum[WHITE_TURN];//ã“ã‚“ãªæ„Ÿã˜ã§
-			// result ã«ã‚ˆã‚Šè¡¨ç¤ºã‚’å¤‰ãˆã‚‹
+			//Î‚Ì”‚ÅŸ‚¿•‰‚¯”»’è‚µ•\¦
+			result = stonenum[BLACK_TURN] - stonenum[WHITE_TURN];//‚±‚ñ‚ÈŠ´‚¶‚Å
+			// result ‚É‚æ‚è•\¦‚ğ•Ï‚¦‚é
 			if ( result == 0 )
 				printf ( "GAMEOVER!  DRAW!!\n");
-			else 
+			else {
 				printf ( "GAMEOVER! %s WIN!!\n", ( result > 0 ? "BLACK": "WHITE"));
-			return 0;
+				printf ( "RANDOM:%d,AI:%d\n",stonenum[BLACK_TURN],stonenum[WHITE_TURN]);
+			}
+			break;
 		}
 		if ( turn == manturn )
-			nextmove = manPlayer();
-			//randplayer();
+			//nextmove = manPlayer();
+			nextmove = randplayer();
 		else
 			//nextmove = randPlayer();
 			comPlayer();
@@ -395,8 +467,10 @@ int main()
 		else
 			printf("PASS\n");
 	}
+	end = clock();
+	printf ("%f sec \n",(double)(end-start)/CLOCKS_PER_SEC);
 	printf( "Press any key and Enter\n");
 	fgets(line,256,stdin);
 	scanf("");
 	return 0;
-}*/
+}
