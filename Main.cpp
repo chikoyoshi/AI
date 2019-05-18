@@ -1,11 +1,10 @@
 #include <iostream>
 #include <cstring>
-#include "Othello.cpp"
+#include "Othello.h"
 
 int main(){
-    Othello othello = Othello();
 
-    othello.display();
+    output();
 
     return 0;
 }
