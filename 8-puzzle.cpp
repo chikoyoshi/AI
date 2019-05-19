@@ -3,18 +3,19 @@
 #include <vector>
 
 const int N = 9;
-const int UP = 0;
-const int DOWN = 1;
-const int RIGHT = 2;
-const int LEFT = 4;
+const int UP = 1;
+const int DOWN = 10;
+const int RIGHT = 100;
+const int LEFT = 1000;
 
 typedef struct node{
     int *field;
     int cost;
+    int lastmove;
 }NODE;
 
 //0の位置を引数で与え，動かすことのできる方向をintで返す.
-int move(int n){
+int canMove(int n){
     int hoge,ret=-1;
     hoge = n % 3;
     switch (hoge){
@@ -51,6 +52,11 @@ int zeroPosition(int *field){
 int main(){
 
     std::vector<NODE> open;
+    std::vector<NODE> close;
+    int *n;
+    int canmove = -1;
+    int lastmove = -1;
+    NODE temp;
 
     int field[9] =
     {
@@ -68,9 +74,20 @@ int main(){
     //1.初期設定をopenに設定
     //2.ループ開始
 
-    while (!open.empty){
-        
+    for (int i=0;;i++){
+        if (!open.empty)    break;          //オープンリストが空のとき
+        n = open.at(1).field;
+        if (h(n,ans) == N-1)    break;      //取り出したものが解のとき
+        open.erase(open.begin);             //オープンリストからノードを削除
 
+        //nを展開してオープンリストに追加そしてソート
+        canmove = canMove(zeroPosition(field));
+
+        //上方向の移動
+        if (canmove % 10){
+            temp.lastmove = UP;
+            temp.field
+        }
     }
 
 
