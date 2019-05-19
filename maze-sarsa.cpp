@@ -25,20 +25,20 @@ int s[MAX_Y][MAX_X] = {
 
 // TD学習用パラメータ
 double alpha = 0.2;                 //学習率    
-double gamma = 0.9;                 //割引率
+double my_gamma = 0.9;                 //割引率
 double epsilon = 0.3;
 double Q[MAX_Y][MAX_X][ACT_NUM];    //行動価値
 
 //乱数生成
-double random(){
+double my_random(){
     std::random_device rnd;
     std::mt19937 mt(rnd());
-    return (double)(mt() + 1) / (double)(mt.max+2);
+    return (double)mt() / (double)mt.max();
 }
 
 //sarsa
 void sarsa(int x, int y, int a, double r, int nx, int ny, int ns){
-    Q[y][x][a] = Q[y][x][a] + alpha * (r + gamma * Q[ny][nx][ns] - Q[y][x][a]);
+    Q[y][x][a] = Q[y][x][a] + alpha * (r + my_gamma * Q[ny][nx][ns] - Q[y][x][a]);
 }
 
 //行動価値の初期化
@@ -46,7 +46,7 @@ void init(){
     for (int i=0; i<MAX_Y; i++){
         for (int j=0; j<MAX_X; j++){
             for (int k=0; k<ACT_NUM; k++){
-                Q[i][j][k] = random() - 0.5;        //[-0.5,0.5)の範囲で初期化
+                Q[i][j][k] = my_random() - 0.5;        //[-0.5,0.5)の範囲で初期化
             }
         }
     }
@@ -57,8 +57,8 @@ int action(int x, int y){
     int k;
     int act;
 
-    if (random() < epsilon){                        //確率0.3でランダム行動
-        return (int)(random() * ACT_NUM);
+    if (my_random() < epsilon){                        //確率0.3でランダム行動
+        return (int)(my_random() * ACT_NUM);
     } else {                                        //greedy
         double max = Q[y][x][0];
         act = 0;
@@ -130,7 +130,6 @@ int main() {
     for (epi = 0; epi < MAX_EPI; epi++){
         x = sx;
         y = sy;
-        a;
         nx = sx;
         ny = sy;
         na = 0;
